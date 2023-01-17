@@ -25,7 +25,7 @@ function App() {
       auth: process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN,
       throttle: {
         onRateLimit: (retryAfter: number, options: { method: string, url: string }, octokit: Octokit, retryCount: number) => {
-          console.log(
+          setApiErrorMessage(
             `Request quota exhausted for request ${options.method} ${options.url}`
           );
 
@@ -37,7 +37,7 @@ function App() {
         },
         onSecondaryRateLimit: (retryAfter: number, options: { method: string, url: string }, octokit: Octokit) => {
           // does not retry, only logs a warning
-          console.log(
+          setApiErrorMessage(
             `SecondaryRateLimit detected for request ${options.method} ${options.url}`
           );
         },
@@ -115,7 +115,7 @@ function App() {
         <input className='input' value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder='Repository name' autoFocus />
         <div className='result'>
           {apiErrorMessage.length > 0 && (
-            <span>{apiErrorMessage} <button onClick={handleReset}>Back to Page 1</button></span>
+            <span>{apiErrorMessage} {apiErrorMessage === 'Only the first 1000 search results are available' && <button onClick={handleReset}>Back to Page 1</button>}</span>
           )}
           {
             repositoriesData?.items && repositoriesData?.items.length > 0 && (
