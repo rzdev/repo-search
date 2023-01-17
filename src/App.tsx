@@ -1,21 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 import { Octokit } from "@octokit/core";
 import { throttling } from "@octokit/plugin-throttling";
-import ReactPaginate from 'react-paginate';
-import { useDebounce } from './hooks/useDebounce';
-import { IResponse } from './types/searchReponse';
-import './App.css';
+import ReactPaginate from "react-paginate";
+import { useDebounce } from "./hooks/useDebounce";
+import { IResponse } from "./types/searchReponse";
+import "./App.css";
 
 function App() {
   const itemsPerPage = 10;
 
   // Set default states
   const [isLoading, setIsLoading] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState("");
   const debouncedSearchKeyword = useDebounce(searchKeyword);
-  const [searchParams, setSearchParams] = useState({ keyword: '', pageNo: 1 });
-  const [repositoriesData, setRepositoriesData] = useState<IResponse | null>(null);
-  const [apiErrorMessage, setApiErrorMessage] = useState('');
+  const [searchParams, setSearchParams] = useState({ keyword: "", pageNo: 1 });
+  const [repositoriesData, setRepositoriesData] = useState<IResponse | null>(
+    null
+  );
+  const [apiErrorMessage, setApiErrorMessage] = useState("");
 
   // Initialized Octokit and memoized it
   const octokit = useMemo(() => {
@@ -24,7 +26,12 @@ function App() {
     return new MyOctokit({
       auth: process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN,
       throttle: {
-        onRateLimit: (retryAfter: number, options: { method: string, url: string }, octokit: Octokit, retryCount: number) => {
+        onRateLimit: (
+          retryAfter: number,
+          options: { method: string; url: string },
+          octokit: Octokit,
+          retryCount: number
+        ) => {
           setApiErrorMessage(
             `Request quota exhausted for request ${options.method} ${options.url}`
           );
@@ -35,7 +42,11 @@ function App() {
             return true;
           }
         },
-        onSecondaryRateLimit: (retryAfter: number, options: { method: string, url: string }, octokit: Octokit) => {
+        onSecondaryRateLimit: (
+          retryAfter: number,
+          options: { method: string; url: string },
+          octokit: Octokit
+        ) => {
           // does not retry, only logs a warning
           setApiErrorMessage(
             `SecondaryRateLimit detected for request ${options.method} ${options.url}`
@@ -50,14 +61,16 @@ function App() {
     const fetchRepositoriesDataFromAPI = async () => {
       try {
         setIsLoading(true);
-        const { data } = await octokit.request('GET /search/repositories{?q,sort,order,per_page,page}',
+        const { data } = await octokit.request(
+          "GET /search/repositories{?q,sort,order,per_page,page}",
           {
             q: searchParams.keyword,
             page: searchParams.pageNo,
             per_page: itemsPerPage,
-            sort: 'stars',
-            order: 'desc',
-          });
+            sort: "stars",
+            order: "desc",
+          }
+        );
 
         setRepositoriesData(data);
       } catch (error) {
@@ -73,11 +86,10 @@ function App() {
       } finally {
         setIsLoading(false);
       }
-    }
+    };
 
-    setApiErrorMessage('');
+    setApiErrorMessage("");
     fetchRepositoriesDataFromAPI();
-
   }, [octokit, searchParams]);
 
   // set search params on search keyword change
@@ -90,57 +102,78 @@ function App() {
   }, [debouncedSearchKeyword]);
 
   const handlePageClick = (event: { selected: number }) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setSearchParams({ ...searchParams, pageNo: event.selected + 1 })
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setSearchParams({ ...searchParams, pageNo: event.selected + 1 });
   };
 
   const handleReset = () => {
-    setApiErrorMessage('');
-    setSearchParams({ ...searchParams, pageNo: 1 })
-  }
+    setApiErrorMessage("");
+    setSearchParams({ ...searchParams, pageNo: 1 });
+  };
 
-  const pageCount = repositoriesData?.total_count && repositoriesData?.total_count > 0 ? Math.ceil(repositoriesData?.total_count / itemsPerPage) : 0;
+  const pageCount =
+    repositoriesData?.total_count && repositoriesData?.total_count > 0
+      ? Math.ceil(repositoriesData?.total_count / itemsPerPage)
+      : 0;
 
-  if (typeof process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN === 'undefined' || process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN.length === 0) {
+  if (
+    typeof process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN === "undefined" ||
+    process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN.length === 0
+  ) {
     return (
-      <h1>To run this application please set GitHub Personal Access Token in .env file</h1>
+      <h1>
+        To run this application please set GitHub Personal Access Token in .env
+        file
+      </h1>
     );
   }
 
   return (
-    <div className='app'>
-      {isLoading && <div className='loading-bar'>Loading...</div>}
-      <div className='container'>
+    <div className="app">
+      {isLoading && <div className="loading-bar">Loading...</div>}
+      <div className="container">
         <h1>Search GitHub Repositories</h1>
-        <input className='input' value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder='Repository name' autoFocus />
-        <div className='result'>
+        <input
+          className="input"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          placeholder="Repository name"
+          autoFocus
+        />
+        <div className="result">
           {apiErrorMessage.length > 0 && (
-            <span>{apiErrorMessage} {apiErrorMessage === 'Only the first 1000 search results are available' && <button onClick={handleReset}>Back to Page 1</button>}</span>
+            <span>
+              {apiErrorMessage}{" "}
+              {apiErrorMessage ===
+                "Only the first 1000 search results are available" && (
+                <button onClick={handleReset}>Back to Page 1</button>
+              )}
+            </span>
           )}
-          {
-            repositoriesData?.items && repositoriesData?.items.length > 0 && (
-              <span>Search Result:</span>
-            )
-          }
-          {repositoriesData?.items?.map((item) =>
-            <div key={item.id} className='result-item' onClick={() => window.open(item.html_url)}>
-              <div className='top'>
-                <div className='left'>
-                  <div className='repo-name'>
+          {repositoriesData?.items && repositoriesData?.items.length > 0 && (
+            <span>Search Result:</span>
+          )}
+          {repositoriesData?.items?.map((item) => (
+            <div
+              key={item.id}
+              className="result-item"
+              onClick={() => window.open(item.html_url)}
+            >
+              <div className="top">
+                <div className="left">
+                  <div className="repo-name">
                     <h2>{item.name}</h2>
                     <span>{item.visibility}</span>
                   </div>
                 </div>
-                <div className='right'>
-                  {item.stargazers_count} Stars
-                </div>
+                <div className="right">{item.stargazers_count} Stars</div>
               </div>
               {item.description}
             </div>
-          )}
+          ))}
         </div>
         {repositoriesData?.items && repositoriesData?.items?.length > 0 && (
-          <div className='pagination'>
+          <div className="pagination">
             <ReactPaginate
               breakLabel="..."
               nextLabel="next >"
