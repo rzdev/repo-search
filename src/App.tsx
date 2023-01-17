@@ -89,6 +89,11 @@ function App() {
     }
   },[debouncedSearchKeyword]);
 
+  const handlePageClick = (event: {selected: number}) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setSearchParams({...searchParams,pageNo: event.selected + 1 })
+  }; 
+
   const handleReset = () => {
     setApiErrorMessage('');
     setSearchParams({...searchParams,pageNo: 1 })
@@ -106,8 +111,13 @@ function App() {
           { apiErrorMessage.length > 0 && (
             <span>{apiErrorMessage} <button onClick={handleReset}>Back to Page 1</button></span>
           ) }
+          {
+            repositoriesData?.items && repositoriesData?.items.length > 0 && (
+              <span>Search Result:</span>
+            )
+          }
           {repositoriesData?.items?.map((item) =>
-            <div key={item.id} className='result-item'>
+            <div key={item.id} className='result-item' onClick={()=>window.open(item.html_url)}>
               <h2>{item.name}</h2>
             </div>
           )}
@@ -117,7 +127,7 @@ function App() {
             <ReactPaginate
               breakLabel="..."
               nextLabel="next >"
-              onPageChange={(e) => setSearchParams({...searchParams,pageNo: e.selected + 1 })}
+              onPageChange={handlePageClick}
               forcePage={searchParams.pageNo - 1}
               pageRangeDisplayed={10}
               pageCount={pageCount}

@@ -27,6 +27,20 @@
   }
 }
 
+.app .result {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
+
+.app .result .result-item {
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #000;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 .app .pagination {
   display: flex;
   justify-content: center;
@@ -39,6 +53,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  margin: 40px 0;
 }
 
 .app .pagination ul li.selected {
@@ -60,4 +75,6 @@ Input styles
 .input {
   font-size: 24px;
   margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 10px;
 }
