@@ -1,0 +1,63 @@
+.app {
+  display: flex;
+  justify-content: center;
+}
+
+.app .loading-bar {
+  background-color: #ccc;
+  padding: 10px 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+.app .container {
+  margin-top: 40px;
+}
+
+@media only screen and (min-width: 1024px) {
+  .app .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+.app .pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.app .pagination ul {
+  display: flex;
+  justify-content: center;
+  column-gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.app .pagination ul li.selected {
+  font-weight: bold;
+}
+
+.app .pagination ul li a {
+  cursor: pointer;
+}
+
+.app .pagination ul li.disabled a {
+  cursor: default;
+}
+
+/*
+Input styles
+*/
+
+.input {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
