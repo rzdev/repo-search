@@ -13,7 +13,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState('');
   const debouncedSearchKeyword = useDebounce(searchKeyword);
-  const [searchParams, setSearchParams] = useState({keyword: '', pageNo: 1});
+  const [searchParams, setSearchParams] = useState({ keyword: '', pageNo: 1 });
   const [repositoriesData, setRepositoriesData] = useState<IResponse | null>(null);
   const [apiErrorMessage, setApiErrorMessage] = useState('');
 
@@ -50,21 +50,21 @@ function App() {
     const fetchRepositoriesDataFromAPI = async () => {
       try {
         setIsLoading(true);
-        const { data } = await octokit.request('GET /search/repositories{?q,sort,order,per_page,page}', 
-                          { 
-                            q: searchParams.keyword,
-                            page: searchParams.pageNo,
-                            per_page: itemsPerPage,
-                            sort: 'stars',
-                            order: 'desc',
-                          });
+        const { data } = await octokit.request('GET /search/repositories{?q,sort,order,per_page,page}',
+          {
+            q: searchParams.keyword,
+            page: searchParams.pageNo,
+            per_page: itemsPerPage,
+            sort: 'stars',
+            order: 'desc',
+          });
 
         setRepositoriesData(data);
       } catch (error) {
         setRepositoriesData(null);
         if (error instanceof Error) {
           // We don't need to show error for empty search keyword, other than that show error message
-          if(!error.message.includes('"field":"q","code":"missing"')) {
+          if (!error.message.includes('"field":"q","code":"missing"')) {
             setApiErrorMessage(error.message);
           }
         } else {
@@ -81,22 +81,22 @@ function App() {
   }, [octokit, searchParams]);
 
   // set search params on search keyword change
-  useEffect(()=>{
-    if(debouncedSearchKeyword.length > 0) {
-      setSearchParams({keyword: debouncedSearchKeyword, pageNo: 1});
+  useEffect(() => {
+    if (debouncedSearchKeyword.length > 0) {
+      setSearchParams({ keyword: debouncedSearchKeyword, pageNo: 1 });
     } else {
       setRepositoriesData(null);
     }
-  },[debouncedSearchKeyword]);
+  }, [debouncedSearchKeyword]);
 
-  const handlePageClick = (event: {selected: number}) => {
+  const handlePageClick = (event: { selected: number }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setSearchParams({...searchParams,pageNo: event.selected + 1 })
-  }; 
+    setSearchParams({ ...searchParams, pageNo: event.selected + 1 })
+  };
 
   const handleReset = () => {
     setApiErrorMessage('');
-    setSearchParams({...searchParams,pageNo: 1 })
+    setSearchParams({ ...searchParams, pageNo: 1 })
   }
 
   const pageCount = repositoriesData?.total_count && repositoriesData?.total_count > 0 ? Math.ceil(repositoriesData?.total_count / itemsPerPage) : 0;
@@ -108,16 +108,16 @@ function App() {
         <h1>Search GitHub Repositories</h1>
         <input className='input' value={searchKeyword} onChange={(e) => setSearchKeyword(e.target.value)} placeholder='Repository name' autoFocus />
         <div className='result'>
-          { apiErrorMessage.length > 0 && (
+          {apiErrorMessage.length > 0 && (
             <span>{apiErrorMessage} <button onClick={handleReset}>Back to Page 1</button></span>
-          ) }
+          )}
           {
             repositoriesData?.items && repositoriesData?.items.length > 0 && (
               <span>Search Result:</span>
             )
           }
           {repositoriesData?.items?.map((item) =>
-            <div key={item.id} className='result-item' onClick={()=>window.open(item.html_url)}>
+            <div key={item.id} className='result-item' onClick={() => window.open(item.html_url)}>
               <div className='top'>
                 <div className='left'>
                   <div className='repo-name'>
