@@ -118,7 +118,18 @@ function App() {
           }
           {repositoriesData?.items?.map((item) =>
             <div key={item.id} className='result-item' onClick={()=>window.open(item.html_url)}>
-              <h2>{item.name}</h2>
+              <div className='top'>
+                <div className='left'>
+                  <div className='repo-name'>
+                    <h2>{item.name}</h2>
+                    <span>{item.visibility}</span>
+                  </div>
+                </div>
+                <div className='right'>
+                  {item.stargazers_count} Stars
+                </div>
+              </div>
+              {item.description}
             </div>
           )}
         </div>
