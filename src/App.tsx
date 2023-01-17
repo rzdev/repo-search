@@ -89,7 +89,10 @@ function App() {
     };
 
     setApiErrorMessage("");
-    fetchRepositoriesDataFromAPI();
+
+    if (searchParams.keyword.length > 0) {
+      fetchRepositoriesDataFromAPI();
+    }
   }, [octokit, searchParams]);
 
   // set search params on search keyword change
@@ -97,6 +100,7 @@ function App() {
     if (debouncedSearchKeyword.length > 0) {
       setSearchParams({ keyword: debouncedSearchKeyword, pageNo: 1 });
     } else {
+      setApiErrorMessage("");
       setRepositoriesData(null);
     }
   }, [debouncedSearchKeyword]);
