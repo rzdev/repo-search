@@ -101,6 +101,12 @@ function App() {
 
   const pageCount = repositoriesData?.total_count && repositoriesData?.total_count > 0 ? Math.ceil(repositoriesData?.total_count / itemsPerPage) : 0;
 
+  if (typeof process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN === 'undefined' || process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN.length === 0) {
+    return (
+      <h1>To run this application please set GitHub Personal Access Token in .env file</h1>
+    );
+  }
+
   return (
     <div className='app'>
       {isLoading && <div className='loading-bar'>Loading...</div>}

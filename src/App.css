@@ -15,16 +15,11 @@
 
 .app .container {
   margin-top: 40px;
-}
-
-@media only screen and (min-width: 1024px) {
-  .app .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    padding: 0 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 0 20px;
 }
 
 .app .container h1 {
@@ -60,6 +55,10 @@
   column-gap: 5px;
 }
 
+.app .container .result .result-item .top .right {
+  text-align: right;
+}
+
 .app .container .pagination {
   display: flex;
   justify-content: center;
@@ -67,6 +66,7 @@
 
 .app .container .pagination ul {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   column-gap: 10px;
   margin: 0;
