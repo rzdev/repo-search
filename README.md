@@ -6,6 +6,10 @@
 
 To run this app please use your Github Personal Token (need to have repo scope access) and use it as the value of `REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN` inside `.env` file.
 
+## Demo
+
+[https://repo-search-rzdev.vercel.app/](https://repo-search-rzdev.vercel.app/)
+
 ## Available Scripts
 
 In the project directory, you can run:
