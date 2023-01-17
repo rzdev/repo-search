@@ -38,7 +38,7 @@ function App() {
 
           if (retryCount < 1) {
             // only retries once
-            octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+            setApiErrorMessage(`Retrying after ${retryAfter} seconds!`);
             return true;
           }
         },
