@@ -167,7 +167,9 @@ function App() {
                 <div className="left">
                   <div className="repo-name">
                     <h2>{item.name}</h2>
-                    <span>{item.visibility}</span>
+                    <div className="visibility">
+                      <span>{item.visibility}</span>
+                    </div>
                   </div>
                 </div>
                 <div className="right">{item.stargazers_count} Stars</div>

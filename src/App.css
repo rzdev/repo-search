@@ -55,6 +55,14 @@
   column-gap: 5px;
 }
 
+.app .container .result .result-item .top .repo-name .visibility {
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 5px;
+}
+
 .app .container .result .result-item .top .right {
   text-align: right;
 }
