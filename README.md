@@ -4,7 +4,7 @@
 - Throttling & Debounce implemented
 - Pagination Implemented
 
-To run this app please use your Github Personal Token (need to have repo scope access) and use it as the value of `REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN` inside `.env` file.
+To run this app please use your GitHub Personal Token (need to have repo scope access) and use it as the value of `REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN` inside `.env` file.
 
 ## Demo
 
