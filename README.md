@@ -4,6 +4,8 @@
 - Throttling & Debounce implemented
 - Pagination Implemented
 
+To run this app please use your Github Personal Token and use it as the value of `REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN` inside `.env` file.
+
 ## Available Scripts
 
 In the project directory, you can run:
