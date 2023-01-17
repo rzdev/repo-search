@@ -6,7 +6,7 @@
 
 To run this app please use your GitHub Personal Token (need to have repo scope access) and use it as the value of `REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN` inside `.env` file.
 
-Create your GitHub Personal Token here [https://github.com/rzdev/repo-search](https://github.com/rzdev/repo-search)
+Create your GitHub Personal Token here [https://github.com/settings/tokens/new?scopes=repo](https://github.com/settings/tokens/new?scopes=repo)
 
 ## Demo
 
